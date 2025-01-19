@@ -35,7 +35,7 @@ Code of Africa Challenge "A MERN stack Wallet Web Application to track transacti
 
 ## Demo
 
-[Live Demo](https://taskforce-wallet-web-app-lswk.vercel.app/)
+[Live Demo](https://task-force-pro-wallet-gray.vercel.app//)
 
 ## Installation
 
