@@ -1,10 +1,10 @@
-import DefaultLayout from '../components/DefaultLayout'
-import PieChart from '../components/PieChart'
-import React, { useEffect, useState } from 'react'
-import StatisticsChart from '../components/StatisticsChart'
-import axios from 'axios'
-import { Button, Card, Col, Row, Space, Table, Typography } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import DefaultLayout from "../components/DefaultLayout";
+import PieChart from "../components/PieChart";
+import React, { useEffect, useState } from "react";
+import StatisticsChart from "../components/StatisticsChart";
+import axios from "axios";
+import { Button, Card, Col, Row, Space, Table, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography
 
@@ -67,7 +67,7 @@ const DashBoardHome = () => {
     },
     {
       title: 'Category',
-      dataIndex: 'category',
+      dataIndex: 'categoryname',
       key: 'category'
     }
   ]

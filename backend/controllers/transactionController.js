@@ -2,65 +2,119 @@ import Account from "../models/Acount.js";
 import Category from "../models/Category.js";
 import Transaction from "../models/Transactions.js";
 
+// Helper function to calculate the new balance for the account
+const updateAccountBalance = async (accountId) => {
+  try {
+    const account = await Account.findById(accountId);
+    if (!account) {
+      throw new Error('Account not found');
+    }
+
+    // Calculate the total balance based on transactions
+    const totalIncome = await Transaction.aggregate([
+      { $match: { account: accountId, type: 'Income' } },
+      { $group: { _id: null, total: { $sum: '$amount' } } }
+    ]);
+    
+    const totalExpenses = await Transaction.aggregate([
+      { $match: { account: accountId, type: 'Expense' } },
+      { $group: { _id: null, total: { $sum: '$amount' } } }
+    ]);
+    
+    const incomeTotal = totalIncome[0]?.total || 0;
+    const expensesTotal = totalExpenses[0]?.total || 0;
+    
+    const newBalance = incomeTotal - expensesTotal;
+    
+    // Update the account balance and save
+    account.balance = newBalance;
+    await account.save();
+    return account;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+export const getAllTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaction.find().populate('account').populate('category');
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Create a new transaction and update the account balance
 export const createTransaction = async (req, res) => {
   try {
     const { type, amount, account, category } = req.body;
     
-
     if (!type || !amount || !account || !category) {
       return res.status(400).json({ error: 'Type, amount, account, and category are required' });
     }
 
     const accountToUpdate = await Account.findById(account);
     if (!accountToUpdate) {
-       return res.status(404).json({ error: 'Account not found' });
+      return res.status(404).json({ error: 'Account not found' });
     }
+    
     const categoryToUpdate = await Category.findById(category);
     if (!categoryToUpdate) {
       return res.status(404).json({ error: 'Category not found' });
     }
-req.body.categoryname=categoryToUpdate.name
 
-if (type === 'Expense') {
-  if (amount > accountToUpdate.limit) {
-    return res.status(400).json({ error: 'account planned limit exceeded ' });
-  }
-  console.log("the accum is _______________________________________________",categoryToUpdate.accumulatedfunds )
-  console.log("the cat buget is _______________________________________________", categoryToUpdate.budgetAmount)
-  console.log("the transais _ ama______________________________________________",typeof amount)
-     if (categoryToUpdate.accumulatedfunds + amount > categoryToUpdate.budgetAmount) {
-      
+    req.body.categoryname = categoryToUpdate.name;
 
-        return res.status(400).json({ error: 'you are excedding ! This category budget has already reached its limit' });
+    // Handling Expense transactions and checking against budget
+    if (type === 'Expense') {
+      if (amount > accountToUpdate.limit) {
+        return res.status(400).json({ error: `Account planned limit ${accountToUpdate.limit} exceeded` });
       }
-       categoryToUpdate.accumulatedfunds = categoryToUpdate.accumulatedfunds+ amount;
-      await categoryToUpdate.save();
-      
-    }
-    
 
+      if (categoryToUpdate.accumulatedfunds + amount > categoryToUpdate.budgetAmount) {
+        const remainingBudget = categoryToUpdate.budgetAmount - categoryToUpdate.accumulatedfunds;
+        if (remainingBudget > 0) {
+          categoryToUpdate.accumulatedfunds = categoryToUpdate.budgetAmount;
+          await categoryToUpdate.save();
+          req.body.amount = remainingBudget;
+
+          const transaction = new Transaction(req.body);
+          const savedTransaction = await transaction.save();
+
+          accountToUpdate.balance -= remainingBudget;
+          accountToUpdate.limit = Math.max(0, accountToUpdate.limit - remainingBudget);
+          await accountToUpdate.save();
+
+          return res.status(201).json({ message: `Partial transaction of ${remainingBudget} completed due to budget limit.`, transaction: savedTransaction });
+        } else {
+          return res.status(400).json({ error: 'You are exceeding the budget! No funds available.' });
+        }
+      }
+
+      categoryToUpdate.accumulatedfunds += amount;
+      await categoryToUpdate.save();
+    }
+
+    req.body.amount = amount;
     const transaction = new Transaction(req.body);
     const savedTransaction = await transaction.save();
 
+    // Update account balance
     if (type === 'Income') {
-      accountToUpdate.balance =accountToUpdate.balance + amount;
+      accountToUpdate.balance += amount;
     } else if (type === 'Expense') {
-      accountToUpdate.balance= accountToUpdate.balance - amount;
-    accountToUpdate.limit = accountToUpdate.limit -amount;  
-
+      accountToUpdate.balance -= amount;
+      accountToUpdate.limit = Math.max(0, accountToUpdate.limit - amount);
     }
- accountToUpdate.limit = Math.max(0, accountToUpdate.limit);
 
     await accountToUpdate.save();
-
     res.status(201).json(savedTransaction);
   } catch (error) {
     console.error('Error creating transaction:', error);
-     res.status(500).json({ error: 'An unexpected error occurred while calculating total expenses' });
+    res.status(500).json({ error: 'An unexpected error occurred while processing the transaction' });
   }
 };
 
-
+// Update an existing transaction and recalculate account balance
 export const updateTransaction = async (req, res) => {
   try {
     const { type, amount, account } = req.body;
@@ -79,34 +133,24 @@ export const updateTransaction = async (req, res) => {
       return res.status(404).json({ error: "Transaction not found" });
     }
 
-    
+    // Revert previous transaction before updating balance
     if (transaction.type === "Income") {
       accountToUpdate.balance -= transaction.amount;
     } else if (transaction.type === "Expense") {
       accountToUpdate.balance += transaction.amount;
     }
 
-    
-    if (type === "Expense" && accountToUpdate.balance - amount < accountToUpdate.limit) {
-      return res.status(400).json({ error: "Updated transaction exceeds the account's limit" });
-    }
-
-    
+    // Update transaction fields
     transaction.type = type;
     transaction.amount = amount;
     transaction.account = account;
     await transaction.save();
 
-    
+    // Update the account balance based on the updated transaction
     if (type === "Income") {
       accountToUpdate.balance += amount;
     } else if (type === "Expense") {
       accountToUpdate.balance -= amount;
-    }
-
-    
-    if (accountToUpdate.limit > accountToUpdate.balance) {
-      accountToUpdate.limit = accountToUpdate.balance;
     }
 
     await accountToUpdate.save();
@@ -117,7 +161,7 @@ export const updateTransaction = async (req, res) => {
   }
 };
 
-
+// Delete a transaction and update the account balance
 export const deleteTransaction = async (req, res) => {
   try {
     const transaction = await Transaction.findById(req.params.id);
@@ -130,6 +174,7 @@ export const deleteTransaction = async (req, res) => {
       return res.status(404).json({ error: 'Account not found' });
     }
 
+    // Update account balance based on transaction type
     if (transaction.type === 'Income') {
       account.balance -= transaction.amount;
     } else if (transaction.type === 'Expense') {
@@ -146,17 +191,7 @@ export const deleteTransaction = async (req, res) => {
   }
 };
 
-
-export const getAllTransactions = async (req, res) => {
-  try {
-    const transactions = await Transaction.find().populate('account');
-    res.status(200).json(transactions);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-
+// Get all transactions for a given account
 export const getTransactionsByAccount = async (req, res) => {
   try {
     const transactions = await Transaction.find({ account: req.params.accountId });
@@ -166,7 +201,7 @@ export const getTransactionsByAccount = async (req, res) => {
   }
 };
 
-
+// Get total income and expenses for reporting purposes
 export const getTotalIncome = async (req, res) => {
   try {
     const totalIncome = await Transaction.aggregate([
