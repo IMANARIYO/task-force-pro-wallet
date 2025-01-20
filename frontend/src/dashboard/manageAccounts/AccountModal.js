@@ -5,47 +5,47 @@ const { Option } = Select
 
 const AccountModal = ({
   isModalVisible,
-  isAdd,  
-  isUpdate,  
-  accountToUpdate,  
+  isAdd,
+  isUpdate,
+  accountToUpdate,
   onCancel,
   onFinish
 }) => {
-  const [form] = Form.useForm()  
+  const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
 
-   
   useEffect(
     () => {
       if (isUpdate && accountToUpdate) {
         form.setFieldsValue({
           name: accountToUpdate.name,
           type: accountToUpdate.type,
-          balance: accountToUpdate.balance,
-          limit: accountToUpdate.limit || accountToUpdate.balance  
+          balance: Number(accountToUpdate.balance),
+          limit: Number(accountToUpdate.limit || accountToUpdate.balance)
         })
       } else if (isAdd) {
-        form.resetFields()  
+        form.resetFields()
       }
     },
     [isUpdate, isAdd, accountToUpdate, form]
   )
 
-   
   const handleSubmit = async values => {
-     
-    if (values.limit > values.balance) {
+    const newvalues = {
+      ...values,
+      balance: Number(values.balance),
+      limit: Number(values.limit)
+    }
+
+    if (newvalues.limit > newvalues.balance) {
       message.error('Limit cannot exceed the balance!')
       return
     }
 
     setLoading(true)
 
-     
     try {
-       
-
-      onFinish(values)  
+      onFinish(newvalues)
       message.success(
         isAdd ? 'Account added successfully!' : 'Account updated successfully!'
       )
@@ -56,10 +56,9 @@ const AccountModal = ({
     }
   }
 
-   
   const handleBlur = e => {
     if (!e.target.value) {
-      e.target.value = accountToUpdate ? accountToUpdate.balance : 0
+      e.target.value = Number(accountToUpdate ? accountToUpdate.balance : 0)
     }
   }
 
@@ -70,12 +69,12 @@ const AccountModal = ({
       }
       visible={isModalVisible}
       onCancel={onCancel}
-      footer={null}  
+      footer={null}
     >
       <Form
         form={form}
         initialValues={
-          isAdd ? { name: '', type: '', balance: 0, limit: '' } : {}
+          isAdd ? { name: '', type: '', balance: 0, limit: 0 } : {}
         }
         onFinish={handleSubmit}
       >
@@ -117,7 +116,7 @@ const AccountModal = ({
           <Input
             type='number'
             placeholder='i will not use more than'
-            onBlur={handleBlur}  
+            onBlur={handleBlur}
           />
         </Form.Item>
 

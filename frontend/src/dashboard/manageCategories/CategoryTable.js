@@ -13,6 +13,11 @@ const CategoryTable = ({ categories, onEdit, onDelete, onView }) => {
       dataIndex: "budgetAmount",
       key: "budgetAmount",
     },
+      {
+      title: "accumulated funds ",
+      dataIndex: "accumulatedfunds",
+      key: "budgetAmount",
+    },
     {
       title: "Current Spending",
       dataIndex: "currentSpending",

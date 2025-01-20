@@ -26,7 +26,7 @@ const TransactionSchema = new Schema({
   },
   categoryname:{
     type:String,
-    required:FinalizationRegistry
+    required:false
   },
   date: {
     type: Date,

@@ -27,7 +27,7 @@ export const updateSubcategory = async (
   try {
     await axiosInstance.put(
       `${process.env
-        .REACT_APP_BACKEND_URL}/api/subcategory/update/${categoryId}/${subcategoryId}`,
+        .REACT_APP_BACKEND_URL}/api/subcategory/updateSubcategory/${subcategoryId}`,
       subcategoryData
     )
   } catch (error) {

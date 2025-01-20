@@ -20,12 +20,16 @@ export const createTransaction = async (req, res) => {
       return res.status(404).json({ error: 'Category not found' });
     }
 req.body.categoryname=categoryToUpdate.name
- 
- if (type === 'Expense') {
-      if (amount > accountToUpdate.limit) {
-        return res.status(400).json({ error: 'account planned limit exceeded ' });
-      }
+
+if (type === 'Expense') {
+  if (amount > accountToUpdate.limit) {
+    return res.status(400).json({ error: 'account planned limit exceeded ' });
+  }
+  console.log("the accum is _______________________________________________",categoryToUpdate.accumulatedfunds )
+  console.log("the cat buget is _______________________________________________", categoryToUpdate.budgetAmount)
+  console.log("the transais _ ama______________________________________________",typeof amount)
      if (categoryToUpdate.accumulatedfunds + amount > categoryToUpdate.budgetAmount) {
+      
 
         return res.status(400).json({ error: 'you are excedding ! This category budget has already reached its limit' });
       }

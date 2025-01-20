@@ -34,6 +34,7 @@ const TransactionModal = ({
         <Form.Item
           label='Amount'
           name='amount'
+          type='number'
           rules={[
             { required: true, message: 'Please input the transaction amount!' }
           ]}

@@ -82,12 +82,21 @@ const TransactionManagement = () => {
   }
 
   const handleOk = async values => {
+    
+    const newvalues = {
+        ...values,
+        amount: Number(values.amount),
+    };
     try {
+             console.log("values are ......>>>", newvalues)
+             
       if (currentTransaction) {
-        await updateTransaction(currentTransaction._id, values)
+      
+        await updateTransaction(currentTransaction._id, newvalues)
         message.success('Transaction updated successfully')
       } else {
-        await addTransaction(values)
+   
+        await addTransaction(newvalues)
         message.success('Transaction added successfully')
       }
       setIsModalVisible(false)
