@@ -1,6 +1,5 @@
-import axiosInstance from "./apiConfig";
+import axiosInstance from './apiConfig'
 
-// Fetch all categories
 export const fetchCategories = async () => {
   try {
     const response = await axiosInstance.get('/api/categories/listCategories')
@@ -11,14 +10,12 @@ export const fetchCategories = async () => {
   }
 }
 
-// Fetch a category by ID
 export const fetchCategoryById = async categoryId => {
   try {
     const response = await axiosInstance.get(
       `/api/categories/getcategory/${categoryId}`
     )
 
- 
     return response.data.category
   } catch (error) {
     console.error('Error fetching category', error)
@@ -26,7 +23,6 @@ export const fetchCategoryById = async categoryId => {
   }
 }
 
-// Add a new category
 export const addCategory = async categoryData => {
   try {
     const response = await axiosInstance.post(
@@ -40,7 +36,6 @@ export const addCategory = async categoryData => {
   }
 }
 
-// Update an existing category
 export const updateCategory = async (categoryId, categoryData) => {
   try {
     const response = await axiosInstance.put(
@@ -54,7 +49,6 @@ export const updateCategory = async (categoryId, categoryData) => {
   }
 }
 
-// Delete a category
 export const deleteCategory = async categoryId => {
   try {
     const response = await axiosInstance.delete(

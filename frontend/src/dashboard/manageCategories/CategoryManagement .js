@@ -1,3 +1,4 @@
+import * as categoryService from "../../services/categoryService";
 import * as subcategoryService from "../../services/subcategoryService";
 import CategoryModal from "./CategoryModal";
 import CategoryTable from "./CategoryTable";
@@ -7,21 +8,21 @@ import axios from "axios";
 import { Button, Input, Modal, Table, message } from "antd";
 import { fetchCategoryById } from "../../services/categories";
 
-// Import statements
+ 
 
 const CategoryManagement = () => {
-  // State Management
+   
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
   const [currentSubcategory, setCurrentSubcategory] = useState(null);
   
-  // Modal visibility states
+   
   const [showModal, setShowModal] = useState(false);
   const [subcatListModalVisible, setSubcatListModalVisible] = useState(false);
   const [subcatFormModalVisible, setSubcatFormModalVisible] = useState(false);
   
-  // Form states
+   
   const [isAdd, setIsAdd] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isView, setIsView] = useState(false);
@@ -31,25 +32,18 @@ const CategoryManagement = () => {
     currentSpending: 0,
     description: ''
   });
-
-  // API Configuration
-  const token = localStorage.getItem('token');
-  const axiosInstance = axios.create({
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
-  // Category CRUD Operations
-  const fetchCategories = async () => {
+const fetchCategories = async () => {
     try {
-      const res = await axiosInstance.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/categories/listCategories`
-      );
-      setCategories(res.data.categories);
+      const categories = await categoryService.fetchCategories();
+      setCategories(categories);
     } catch (error) {
       console.error('Failed to fetch categories', error);
       message.error('Failed to fetch categories!');
     }
   };
+
+
+
 
   const handleAdd = () => {
     setSelectedCategory(null);
@@ -64,12 +58,9 @@ const CategoryManagement = () => {
     setIsUpdate(true);
     setShowModal(true);
   };
-
-  const handleDelete = async id => {
+const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/categories/delete/${id}`
-      );
+      await categoryService.deleteCategory(id);
       fetchCategories();
       message.success('Category deleted successfully!');
     } catch (error) {
@@ -78,28 +69,23 @@ const CategoryManagement = () => {
     }
   };
 
+
   const handleSave = async categoryData => {
     try {
       if (isUpdate && selectedCategory) {
-        await axiosInstance.put(
-          `${process.env.REACT_APP_BACKEND_URL}/api/categories/update/${selectedCategory._id}`,
-          categoryData
-        );
+        await categoryService.updateCategory(selectedCategory._id, categoryData);
       } else {
-        await axiosInstance.post(
-          `${process.env.REACT_APP_BACKEND_URL}/api/categories/add`,
-          categoryData
-        );
+await categoryService.addCategory(categoryData);
       }
       setShowModal(false);
       fetchCategories();
     } catch (error) {
-      console.error('Failed to save category', error);
-      message.error('Failed to save category!');
+     console.log('Failed to save category', error);
+     
     }
   };
 
-  // Subcategory CRUD Operations
+   
   const handleAddSubcategory = async () => {
     try {
       if (!selectedCategory._id) {
@@ -113,7 +99,7 @@ const CategoryManagement = () => {
       }
 
       await subcategoryService.addSubcategory(selectedCategory._id, subcategoryData);
-      message.success('Subcategory added successfully!');
+     
       handleSubcategoryFormModalClose();
       await handleView(selectedCategory);
     } catch (error) {
@@ -140,12 +126,12 @@ const CategoryManagement = () => {
         subcategoryData
       );
       
-      message.success('Subcategory updated successfully!');
+    
       handleSubcategoryFormModalClose();
       await handleView(selectedCategory);
     } catch (error) {
-      console.error('Failed to update subcategory', error);
-      message.error('Failed to update subcategory!');
+      console.log('Failed to update subcategory', error);
+   
     }
   };
 
@@ -165,7 +151,7 @@ const CategoryManagement = () => {
     }
   };
 
-  // Modal Handlers
+   
   const handleModalClose = () => {
     setShowModal(false);
     setSelectedCategory(null);
@@ -175,6 +161,7 @@ const CategoryManagement = () => {
   const handleSubcategoryFormModalClose = () => {
     setSubcatFormModalVisible(false);
     resetFormStates();
+     fetchCategories(); 
   };
 
   const handleAddNewSubcategory = () => {
@@ -197,7 +184,7 @@ const CategoryManagement = () => {
     setSubcatFormModalVisible(true);
   };
 
-  // Utility Functions
+   
   const resetFormStates = () => {
     setSubcategoryData({
       name: '',
@@ -226,7 +213,7 @@ const CategoryManagement = () => {
     }
   };
 
-  // Table Configurations
+   
   const subcategoryColumns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
     { 
@@ -265,12 +252,12 @@ const CategoryManagement = () => {
     }
   ];
 
-  // Effects
+   
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  // Render
+   
   return (
     <DefaultLayout>
       <div className='category-management'>

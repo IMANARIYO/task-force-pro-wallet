@@ -1,6 +1,4 @@
-import { Schema, model } from "mongoose";
-
-// models/Subcategory.js
+import { Schema, model } from 'mongoose'
 
 const SubcategorySchema = new Schema(
   {

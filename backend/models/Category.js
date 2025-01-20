@@ -1,6 +1,4 @@
-import { Schema, model } from "mongoose";
-
-// models/Category.js
+import { Schema, model } from 'mongoose'
 
 const CategorySchema = new Schema({
   userId: {
@@ -20,10 +18,10 @@ const CategorySchema = new Schema({
     type: Number,
     default: 0
   },
-  accumulatedfunds:{
+  accumulatedfunds: {
     type: Number,
     default: 0,
-    required:false
+    required: false
   },
   createdAt: {
     type: Date,

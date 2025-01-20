@@ -36,7 +36,7 @@ summaryRouter.get('/summary', async (req, res) => {
      
     const pieChartData = await Transaction.aggregate([
       { $match: { type: 'Expense' } },
-      { $group: { _id: '$category', total: { $sum: '$amount' } } },
+      { $group: { _id: '$categoryname', total: { $sum: '$amount' } } },
       { $project: { category: '$_id', amount: '$total', _id: 0 } }
     ]);
 

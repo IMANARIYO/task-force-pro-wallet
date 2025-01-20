@@ -1,11 +1,11 @@
-import Account from '../models/Acount.js'
+import Account from "../models/Acount.js";
 
 export const addAccount = async (req, res) => {
   try {
-    const { name, type, balance = 0, limit } = req.body
+    let { name, type, balance = 0, limit } = req.body
     limit = limit !== undefined ? Number(limit) : undefined
     balance = balance !== undefined ? Number(balance) : undefined
-    const { userId } = req.user || {}
+    let { userId } = req.user || {}
 
     if (limit !== undefined && limit > balance) {
       return res.status(400).json({
@@ -13,7 +13,7 @@ export const addAccount = async (req, res) => {
       })
     }
 
-    const existingAccount = await Account.findOne({ name, type })
+    const existingAccount = await Account.findOne({ name, type, userId })
     if (existingAccount) {
       return res
         .status(400)
@@ -38,14 +38,14 @@ export const addAccount = async (req, res) => {
 
     return res.status(201).json(savedAccount)
   } catch (error) {
-    console.error('Error adding account:', error)
     res.status(500).json({ error: error.message })
   }
 }
 
 export const getAllAccounts = async (req, res) => {
   try {
-    const accounts = await Account.find()
+    const { userId } = req.user || {}
+    const accounts = await Account.find({ userId })
     res.status(200).json(accounts)
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -68,7 +68,8 @@ export const updateAccount = async (req, res) => {
         .status(400)
         .json({ error: 'Limit cannot exceed the new balance' })
     }
-    if (limit !== undefined && limit > currentAccount.balance) {
+    if (limit !== undefined &&balance===undefined&& limit > currentAccount.balance) {
+      console.log(`Limit${limit} cannot exceed the current balance${currentAccount.balance}`)
       return res
         .status(400)
         .json({ error: 'Limit cannot exceed the current balance' })

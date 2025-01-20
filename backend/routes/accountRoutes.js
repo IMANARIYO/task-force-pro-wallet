@@ -10,12 +10,12 @@ import {
 
 const accountsRouter = express.Router()
 
-accountsRouter.post('/add', addAccount)
+accountsRouter.post('/add',authMiddleware, addAccount)
 
-accountsRouter.get('/', getAllAccounts)
+accountsRouter.get('/',authMiddleware, getAllAccounts)
 
-accountsRouter.put('/edit/:id', updateAccount)
+accountsRouter.put('/edit/:id',authMiddleware, updateAccount)
 
-accountsRouter.delete('/delete/:id', deleteAccount)
+accountsRouter.delete('/delete/:id',authMiddleware, deleteAccount)
 
 export default accountsRouter

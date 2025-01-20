@@ -18,11 +18,11 @@ const TransactionsTable = ({ transactions, loading, onEdit, onDelete,categories 
       dataIndex: ['account', 'name'],
       key: 'account',
     },
-    // {
-    //   title: 'Category',
-    //   dataIndex:['category','name'],
-    //   key: 'category',
-    // },
+     
+     
+     
+     
+     
        {
       title: 'Category',
       dataIndex:'categoryname',
