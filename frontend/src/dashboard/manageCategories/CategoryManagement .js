@@ -2,7 +2,6 @@ import * as categoryService from "../../services/categoryService";
 import * as subcategoryService from "../../services/subcategoryService";
 import CategoryModal from "./CategoryModal";
 import CategoryTable from "./CategoryTable";
-import DefaultLayout from "../../components/DefaultLayout";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Input, Modal, Table, message } from "antd";
@@ -38,7 +37,7 @@ const fetchCategories = async () => {
       setCategories(categories);
     } catch (error) {
       console.error('Failed to fetch categories', error);
-      message.error('Failed to fetch categories!');
+
     }
   };
 
@@ -62,10 +61,10 @@ const handleDelete = async (id) => {
     try {
       await categoryService.deleteCategory(id);
       fetchCategories();
-      message.success('Category deleted successfully!');
+ 
     } catch (error) {
       console.error('Failed to delete category', error);
-      message.error('Failed to delete category!');
+    
     }
   };
 
@@ -104,7 +103,7 @@ await categoryService.addCategory(categoryData);
       await handleView(selectedCategory);
     } catch (error) {
       console.error('Failed to add subcategory', error);
-      message.error('Failed to add subcategory!');
+ 
     }
   };
 
@@ -143,11 +142,11 @@ await categoryService.addCategory(categoryData);
       }
 
       await subcategoryService.deleteSubcategory(subcategoryId);
-      message.success('Subcategory deleted successfully!');
+
       await handleView(selectedCategory);
     } catch (error) {
       console.error('Failed to delete subcategory', error);
-      message.error('Failed to delete subcategory!');
+
     }
   };
 
@@ -207,7 +206,7 @@ await categoryService.addCategory(categoryData);
       setSubcatListModalVisible(true);
     } catch (error) {
       console.error('Failed to fetch category', error);
-      message.error('Failed to fetch category!');
+
       setSelectedCategory(null);
       setSubcategories([]);
     }
@@ -259,18 +258,18 @@ await categoryService.addCategory(categoryData);
 
    
   return (
-    <DefaultLayout>
+
       <div className='category-management'>
         <h1>Category Management</h1>
         
-        {/* Add Category Button */}
+
         <div style={{ marginBottom: '16px', textAlign: 'right' }}>
           <Button type='primary' onClick={handleAdd}>
             Add Category
           </Button>
         </div>
 
-        {/* Category Table */}
+   
         <CategoryTable
           categories={categories}
           onEdit={handleEdit}
@@ -278,7 +277,6 @@ await categoryService.addCategory(categoryData);
           onView={handleView}
         />
 
-        {/* Category Modal */}
         <CategoryModal
           show={showModal}
           isAdd={isAdd}
@@ -288,7 +286,7 @@ await categoryService.addCategory(categoryData);
           onSave={handleSave}
         />
 
-        {/* Subcategories List Modal */}
+ 
         <Modal
           title={`${selectedCategory?.name } Subcategories`}
           open={subcatListModalVisible}
@@ -318,7 +316,7 @@ await categoryService.addCategory(categoryData);
           />
         </Modal>
 
-        {/* Subcategory Form Modal */}
+      
         <Modal
           title={currentSubcategory ? "Edit Subcategory" : "Add Subcategory"}
           open={subcatFormModalVisible}
@@ -390,7 +388,7 @@ await categoryService.addCategory(categoryData);
           </div>
         </Modal>
       </div>
-    </DefaultLayout>
+  
   );
 };
 

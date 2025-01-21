@@ -1,10 +1,9 @@
-import DefaultLayout from "../components/DefaultLayout";
-import PieChart from "../components/PieChart";
-import React, { useEffect, useState } from "react";
-import StatisticsChart from "../components/StatisticsChart";
-import axios from "axios";
-import { Button, Card, Col, Row, Space, Table, Typography } from "antd";
-import { useNavigate } from "react-router-dom";
+import PieChart from '../components/PieChart'
+import React, { useEffect, useState } from 'react'
+import StatisticsChart from '../components/StatisticsChart'
+import axios from 'axios'
+import { Button, Card, Col, Row, Space, Table, Typography } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const { Title } = Typography
 
@@ -73,96 +72,96 @@ const DashBoardHome = () => {
   ]
 
   return (
-    <DefaultLayout>
-      <div style={{ padding: '20px', backgroundColor: '#f0f2f5' }}>
-        <Row gutter={16} style={{ marginBottom: '20px' }}>
-          <Col span={24}>
-            <Space>
-              <Button
-                type='primary'
-                onClick={() => handleNavigate('/accounts')}
-              >
-                Add Account
-              </Button>
-              <Button
-                type='primary'
-                onClick={() => handleNavigate('/transactions')}
-              >
-                Add Transaction
-              </Button>
-              <Button type='default' onClick={() => handleNavigate('/reports')}>
-                Go to Reports
-              </Button>
-            </Space>
-          </Col>
-        </Row>
+    <div style={{ padding: '20px', backgroundColor: '#f0f2f5' }}>
+      <Row gutter={16} style={{ marginBottom: '20px' }}>
+        <Col span={24}>
+          <Space>
+            <Button
+              type='primary'
+              onClick={() => handleNavigate('/home/accounts')}
+            >
+              Add Account
+            </Button>
+            <Button
+              type='primary'
+              onClick={() => handleNavigate('/home/transactions')}
+            >
+              Add Transaction
+            </Button>
+            <Button
+              type='default'
+              onClick={() => handleNavigate('/home/reports')}
+            >
+              Go to Reports
+            </Button>
+          </Space>
+        </Col>
+      </Row>
 
-        <Row gutter={16} style={{ marginBottom: '20px' }}>
-          <Col span={6}>
-            <Card style={{ height: '120px' }}>
-              <Title level={5}>Income (This Month)</Title>
-              <p>
-                RWF {data.income}
-              </p>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card style={{ height: '120px' }}>
-              <Title level={5}>Expenses (This Month)</Title>
-              <p>
-                RWF {data.expenses}
-              </p>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card style={{ height: '120px' }}>
-              <Title level={5}>Total Income</Title>
-              <p>
-                RWF {data.totalIncome}
-              </p>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card style={{ height: '120px' }}>
-              <Title level={5}>Total Expenses</Title>
-              <p>
-                RWF{data.totalExpenses}
-              </p>
-            </Card>
-          </Col>
-        </Row>
+      <Row gutter={16} style={{ marginBottom: '20px' }}>
+        <Col span={6}>
+          <Card style={{ height: '120px' }}>
+            <Title level={5}>Income (This Month)</Title>
+            <p>
+              RWF {data.income}
+            </p>
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card style={{ height: '120px' }}>
+            <Title level={5}>Expenses (This Month)</Title>
+            <p>
+              RWF {data.expenses}
+            </p>
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card style={{ height: '120px' }}>
+            <Title level={5}>Total Income</Title>
+            <p>
+              RWF {data.totalIncome}
+            </p>
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card style={{ height: '120px' }}>
+            <Title level={5}>Total Expenses</Title>
+            <p>
+              RWF{data.totalExpenses}
+            </p>
+          </Card>
+        </Col>
+      </Row>
 
-        <Row gutter={16} style={{ marginBottom: '20px' }}>
-          <Col span={16}>
-            <Card>
-              <Title level={5}>Income & Expenses Statistics</Title>
-              <StatisticsChart data={data.transactions} />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card>
-              <Title level={5}>Expenses by Category</Title>
-              <PieChart data={data.pieChartData} />
-            </Card>
-          </Col>
-        </Row>
+      <Row gutter={16} style={{ marginBottom: '20px' }}>
+        <Col span={16}>
+          <Card>
+            <Title level={5}>Income & Expenses Statistics</Title>
+            <StatisticsChart data={data.transactions} />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Title level={5}>Expenses by Category</Title>
+            <PieChart data={data.pieChartData} />
+          </Card>
+        </Col>
+      </Row>
 
-        <Row>
-          <Col span={24}>
-            <Card>
-              <Title level={5}>Recent Transactions</Title>
-              <Table
-                dataSource={data.transactions}
-                columns={columns}
-                rowKey={record => record.date + record.category}
-                pagination={{ pageSize: 5 }}
-              />
-            </Card>
-          </Col>
-        </Row>
-        
-      </div>
-    </DefaultLayout>
+      <Row>
+        <Col span={24}>
+          <Card>
+            <Title level={5}>Recent Transactions</Title>
+            <Table
+              dataSource={data.transactions}
+              columns={columns}
+              rowKey={record => record.date + record.category}
+              pagination={{ pageSize: 5 }}
+            />
+          </Card>
+        </Col>
+      </Row>
+    </div>
   )
 }
 

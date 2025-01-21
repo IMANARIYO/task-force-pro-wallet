@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { Button, Form, Input, Modal, message } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import axios from "axios";
+import { Button, Form, Input, Modal, message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ visible, onCancel, onLogin, loading }) =>
   <Modal title='Login' visible={visible} onCancel={onCancel} footer={null}>
@@ -123,7 +123,6 @@ const App = () => {
         </Button>
       </div>
 
-      {/* Login Modal */}
       <LoginModal
         visible={isLoginModalVisible}
         onCancel={() => setIsLoginModalVisible(false)}
@@ -131,7 +130,7 @@ const App = () => {
         loading={loading}
       />
 
-      {/* Register Modal */}
+
       <RegisterModal
         visible={isRegisterModalVisible}
         onCancel={() => setIsRegisterModalVisible(false)}

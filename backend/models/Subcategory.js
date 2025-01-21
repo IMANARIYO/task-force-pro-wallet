@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose'
 
 const SubcategorySchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: false
+    },
     name: {
       type: String,
       required: true

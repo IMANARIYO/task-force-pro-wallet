@@ -1,7 +1,6 @@
 import * as XLSX from "xlsx";
-import DefaultLayout from "../components/DefaultLayout";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../services/apiConfig";
 import { Button, DatePicker, Input, Select, Table, message } from "antd";
 
 const { RangePicker } = DatePicker;
@@ -28,9 +27,7 @@ const Reports = () => {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/transactions`
-      );
+      const response =await fetchTransactions()
       setTransactions(response.data);
       setFilteredTransactions(response.data);
     } catch (error) {
@@ -264,7 +261,7 @@ const Reports = () => {
 
   return (
     <div>
-      <DefaultLayout>
+       <>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Transaction Report</h2>
           <div className="space-x-4">
@@ -325,7 +322,7 @@ const Reports = () => {
           rowKey="_id"
           onChange={handleTableChange}
         />
-      </DefaultLayout>
+       </>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import Account from '../models/Acount.js'
-import Category from '../models/Category.js'
+import Account from "../models/Acount.js";
+import Category from "../models/Category.js";
 
 export const createCategory = async (req, res) => {
   let {

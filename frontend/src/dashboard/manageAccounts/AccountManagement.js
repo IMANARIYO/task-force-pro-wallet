@@ -1,8 +1,8 @@
 import AccountModal from './AccountModal'
 import AccountTable from './AccountTable'
-import DefaultLayout from '../../components/DefaultLayout'
 import React, { useEffect, useState } from 'react'
 import { Button, message } from 'antd'
+
 import {
   addAccount,
   deleteAccount,
@@ -52,10 +52,7 @@ const AccountManagement = () => {
     const { success, message: successMessage, error } = await deleteAccount(id)
 
     if (success) {
-      message.success(successMessage)
       fetchAccountsData()
-    } else {
-      message.error(error)
     }
   }
 
@@ -70,8 +67,6 @@ const AccountManagement = () => {
     if (response.success) {
       fetchAccountsData()
       setIsModalVisible(false)
-    } else {
-      message.error(response.error || 'Failed to save account')
     }
   }
 
@@ -80,7 +75,7 @@ const AccountManagement = () => {
   }
 
   return (
-    <DefaultLayout>
+    <div>
       <Button type='primary' onClick={handleAdd}>
         Add Account
       </Button>
@@ -97,7 +92,7 @@ const AccountManagement = () => {
         onCancel={handleCancel}
         onFinish={handleModalFinish}
       />
-    </DefaultLayout>
+    </div>
   )
 }
 

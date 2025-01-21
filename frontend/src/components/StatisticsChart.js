@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CategoryScale, Chart as ChartJS, LineController, LineElement, LinearScale, PointElement } from "chart.js";
 import { Line } from "react-chartjs-2";
+import axiosInstance from "../services/apiConfig";
 
 ChartJS.register(LineElement, PointElement, LineController, CategoryScale, LinearScale);
 
@@ -28,7 +29,7 @@ const StatisticsChart = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/summary/statistics/last4weeks`);
+      const { data } = await axiosInstance.get(`${process.env.REACT_APP_BACKEND_URL}/api/summary/statistics/last4weeks`);
 
       const labels = data.map((item) => `Week ${item._id}`);
       const incomeData = data.map((item) => item.data.find((d) => d.type === 'Income')?.total || 0);

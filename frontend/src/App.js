@@ -1,6 +1,7 @@
 import AccountManagement from "./dashboard/manageAccounts/AccountManagement.js";
 import CategoryManagement from "./dashboard/manageCategories/CategoryManagement .js";
 import DashBoardHome from "./dashboard/DashBoardHome.js";
+import DashboardStructure from "./dashboard/DashboardStructure.js";
 import Home from "./components/Home.js";
 import Login from "./components/Login.js";
 import Navigation from "./components/Navigation.js";
@@ -14,37 +15,50 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 const App = () => {
   return (
     <Router>
-      <div className='min-h-screen bg-gradient-to-b from-blue-50 to-white'>
-        {/* Navigation is always visible */}
-        <Navigation />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route
-            path='/home'
-            element={<ProtectedRoute element={<DashBoardHome />} />}
-          />
-          <Route
-            path='/accounts'
-            element={<ProtectedRoute element={<AccountManagement />} />}
-          />
-          <Route
-            path='/categories'
-            element={<ProtectedRoute element={<CategoryManagement />} />}
-          />
-          <Route
-            path='/transactions'
-            element={<ProtectedRoute element={<TransactionManagement />} />}
-          />
-          <Route
-            path='/reports'
-            element={<ProtectedRoute element={<Reports />} />}
-          />
-        </Routes>
-      </div>
-    </Router>
-  )
-}
+      <Routes>
+   
+        <Route
+          path="/"
+          element={
+            <>
+              <Navigation />
+              <Home />
+            </>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <>
+              <Navigation />
+              <Login />
+            </>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Navigation />
+              <Register />
+            </>
+          }
+        />
 
-export default App
+    
+        <Route
+          path="/home/*"
+          element={<ProtectedRoute element={<DashboardStructure />} />}
+        >
+          <Route index element={<DashBoardHome />} />
+          <Route path="accounts" element={<AccountManagement />} />
+          <Route path="categories" element={<CategoryManagement />} />
+          <Route path="transactions" element={<TransactionManagement />} />
+          <Route path="reports" element={<Reports />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
