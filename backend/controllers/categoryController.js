@@ -198,7 +198,7 @@ export const getCategories = async (req, res) => {
 
 export const deleteCategory = async (req, res) => {
   const { categoryId } = req.params
-  const { userId } = req.user || 1
+  const { userId } = req.user 
 
   try {
     const category = await Category.findOne({ _id: categoryId })
