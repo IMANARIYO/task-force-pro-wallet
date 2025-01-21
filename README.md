@@ -3,9 +3,13 @@
 > A powerful financial management application built with the MERN stack as part of the Code of Africa Challenge.
 
 ## 🔗 Important Links
+
 - 🌐 [Live Demo](https://task-force-pro-wallet-gray.vercel.app/) - Try the app live
 - 📦 [GitHub Repository](https://github.com/IMANARIYO/task-force-pro-wallet.git) - Access the source code
-
+## 🔑 Demo Access
+To quickly test the application, use these credentials:
+- **Email:** demouser@gmail.com
+- **Password:** demo
 
 ## 📋 System Requirements
 
