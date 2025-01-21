@@ -1,9 +1,9 @@
-import PieChart from '../components/PieChart'
-import React, { useEffect, useState } from 'react'
-import StatisticsChart from '../components/StatisticsChart'
-import axios from 'axios'
-import { Button, Card, Col, Row, Space, Table, Typography } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import PieChart from "../components/PieChart";
+import React, { useEffect, useState } from "react";
+import StatisticsChart from "../components/StatisticsChart";
+import axiosInstance from "../services/apiConfig";
+import { Button, Card, Col, Row, Space, Table, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography
 
@@ -21,11 +21,11 @@ const DashBoardHome = () => {
 
   const fetchData = async () => {
     try {
-      const { data: summary } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/summary/summary`
+      const { data: summary } = await axiosInstance.get(
+        `/api/summary/summary`
       )
-      const { data: transactions } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/summary/transactions/recent`
+      const { data: transactions } = await axiosInstance.get(
+        `/api/summary/transactions/recent`
       )
       setData({
         income: summary.monthlyIncome,

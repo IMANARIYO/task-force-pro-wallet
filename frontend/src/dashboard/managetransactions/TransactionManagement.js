@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TransactionModal from "./TransactionModal";
 import TransactionsSummary from "./TransactionSummary";
 import TransactionsTable from "./TransactionsTable";
-import { Button, message } from "antd";
+import { Button } from "antd";
 import { fetchCategories } from "../../services/categories";
 
 import {
@@ -51,7 +51,8 @@ const loadData = async () => {
     setTotalIncome(incomeRes.data?.totalIncome || 0);
     setTotalExpenses(expensesRes.data?.totalExpenses || 0);
     setAccounts(accountsRes.data || []);
-    setCategories(categoriesRes.categories || []);
+    setCategories(categoriesRes.data|| []);
+    
   } catch (error) {
     console.log(error);
   } finally {
@@ -90,7 +91,7 @@ const loadData = async () => {
 
       if (currentTransaction) {
         await updateTransaction(currentTransaction._id, newValues);
-        message.success("Transaction updated successfully");
+        
       } else {
         await addTransaction(newValues);
        

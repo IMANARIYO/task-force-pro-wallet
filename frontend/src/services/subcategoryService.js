@@ -4,13 +4,13 @@ import { message } from "antd";
 export const addSubcategory = async (categoryId, subcategoryData) => {
   try {
     const response = await axiosInstance.post(
-      `${process.env.REACT_APP_BACKEND_URL}/api/subcategory/addSubcategory/${categoryId}/`,
+      `/api/subcategory/addSubcategory/${categoryId}/`,
       { categoryId, ...subcategoryData }
     );
     
      
     if (response.data.message) {
-      message.success(response.data.message);
+      
     }
     return response;  
   } catch (error) {
@@ -29,12 +29,12 @@ export const addSubcategory = async (categoryId, subcategoryData) => {
 export const updateSubcategory = async (categoryId, subcategoryId, subcategoryData) => {
   try {
     const response = await axiosInstance.put(
-      `${process.env.REACT_APP_BACKEND_URL}/api/subcategory/updateSubcategory/${subcategoryId}`,
+      `/api/subcategory/updateSubcategory/${subcategoryId}`,
       subcategoryData
     );
     
     if (response.data.message) {
-      message.success(response.data.message);
+      
     }
     return response;
   } catch (error) {
@@ -52,11 +52,11 @@ export const updateSubcategory = async (categoryId, subcategoryId, subcategoryDa
 export const deleteSubcategory = async (subcategoryId) => {
   try {
     const response = await axiosInstance.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/api/subcategory/deleteSubcategory/${subcategoryId}`
+      `/api/subcategory/deleteSubcategory/${subcategoryId}`
     );
     
     if (response.data.message) {
-      message.success(response.data.message);
+      
     }
     return response;
   } catch (error) {
@@ -70,7 +70,7 @@ export const deleteSubcategory = async (subcategoryId) => {
 export const getSubcategories = async (categoryId) => {
   try {
     const response = await axiosInstance.get(
-      `${process.env.REACT_APP_BACKEND_URL}/api/subcategory/getSubcategories/${categoryId}`
+      `/api/subcategory/getSubcategories/${categoryId}`
     );
 
     if (!response.data || response.data.length === 0) {

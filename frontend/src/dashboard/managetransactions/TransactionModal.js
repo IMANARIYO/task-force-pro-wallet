@@ -11,6 +11,7 @@ const TransactionModal = ({
   accounts,
   categories
 }) => {
+  console.log('am receiivng htese categories', categories)
   return (
     <Modal
       title={currentTransaction ? 'Edit Transaction' : 'Add Transaction'}

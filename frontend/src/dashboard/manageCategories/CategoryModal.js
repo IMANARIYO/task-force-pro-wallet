@@ -31,7 +31,7 @@ const CategoryModal = ({ show, onClose, onSave, category }) => {
       
        
       if (response?.message) {
-        message.success(response.message);  
+        
       } else if (response?.error) {
         message.error(response.error);  
       }

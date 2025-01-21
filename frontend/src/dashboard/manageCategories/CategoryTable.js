@@ -90,7 +90,7 @@ const CategoryTable = ({ categories, onEdit, onDelete, onView }) => {
       render: (text, record) => (
         <>
           <Button onClick={() => onView(record)} type="primary" style={{ marginRight: 8 }}>
-            View
+            subcategories
           </Button>
           <Button onClick={() => onEdit(record)} type="default" style={{ marginRight: 8 }}>
             Edit

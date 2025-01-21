@@ -1,5 +1,5 @@
-import axiosInstance from './apiConfig'
-import { message } from 'antd'
+import axiosInstance from "./apiConfig";
+import { message } from "antd";
 
 export const fetchCategories = async () => {
   try {
@@ -8,13 +8,13 @@ export const fetchCategories = async () => {
   } catch (error) {
     if (error.response && error.response.data) {
       message.error(error.response.data.error)
-      console.error(error.response.data.error)
+    
     } else if (error.request) {
       message.error('No response from the server. Please try again later.')
-      console.error('No response from the server:', error.request)
+     
     } else {
       message.error('An unexpected error occurred. Please try again.')
-      console.error('An unexpected error occurred:', error.message)
+      
     }
   }
 }
@@ -25,18 +25,18 @@ export const addCategory = async categoryData => {
       '/api/categories/add',
       categoryData
     )
-    message.success(response.data.message)
+
     return response.data
   } catch (error) {
     if (error.response && error.response.data) {
-      console.error(error.response.data.error)
+   
       message.error(error.response.data.error)
     } else if (error.request) {
       message.error('No response from the server. Please try again later.')
-      console.error('No response from the server:', error.request)
+     
     } else {
       console.error('An unexpected error occurred:', error)
-      message.error('An unexpected error occurred. Please try again.')
+    
     }
   }
 }
@@ -50,7 +50,7 @@ export const updateCategory = async (categoryId, categoryData) => {
     return res.data
   } catch (error) {
     if (error.response && error.response.data) {
-      message.error(error.response.data.error)
+
       console.error(error.response.data.error)
     } else if (error.request) {
       message.error('No response from the server. Please try again later.')

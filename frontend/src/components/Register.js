@@ -19,7 +19,7 @@ const Register = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`,
         { name, email, password }
       )
-      message.success('Registration successful!')
+
       navigate('/login')
     } catch (error) {
       message.error('Registration failed! Please try again.')

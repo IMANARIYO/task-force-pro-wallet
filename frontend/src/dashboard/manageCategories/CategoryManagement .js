@@ -3,7 +3,6 @@ import * as subcategoryService from "../../services/subcategoryService";
 import CategoryModal from "./CategoryModal";
 import CategoryTable from "./CategoryTable";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Button, Input, Modal, Table, message } from "antd";
 import { fetchCategoryById } from "../../services/categories";
 
@@ -86,6 +85,7 @@ await categoryService.addCategory(categoryData);
 
    
   const handleAddSubcategory = async () => {
+    console.log("the selected category is ________________________", selectedCategory);
     try {
       if (!selectedCategory._id) {
         message.error('Please select a category first!');
@@ -200,7 +200,7 @@ await categoryService.addCategory(categoryData);
       const categoryData = await fetchCategoryById(category._id);
       const subcategories=await subcategoryService.getSubcategories(category._id);
 
-      setSelectedCategory(categoryData);
+      setSelectedCategory(categoryData.data);
       
       setSubcategories(subcategories || []);
       setSubcatListModalVisible(true);
@@ -219,13 +219,13 @@ await categoryService.addCategory(categoryData);
       title: 'Budget Amount', 
       dataIndex: 'budgetAmount', 
       key: 'budgetAmount',
-      render: (value) => `$${parseFloat(value).toFixed(2)}`
+      render: (value) => `${parseFloat(value).toFixed(2)}`
     },
     { 
       title: 'Current Spending', 
       dataIndex: 'currentSpending', 
       key: 'currentSpending',
-      render: (value) => `$${parseFloat(value).toFixed(2)}`
+      render: (value) => `${parseFloat(value).toFixed(2)}`
     },
     { title: 'Description', dataIndex: 'description', key: 'description' },
     {
@@ -359,19 +359,7 @@ await categoryService.addCategory(categoryData);
                 })}
               />
             </div>
-            
-            <div>
-              <label>Current Spending</label>
-              <Input
-                placeholder="Current Spending"
-                type="number"
-                value={subcategoryData.currentSpending}
-                onChange={(e) => setSubcategoryData({ 
-                  ...subcategoryData, 
-                  currentSpending: parseFloat(e.target.value) || 0 
-                })}
-              />
-            </div>
+
             
             <div>
               <label>Description</label>

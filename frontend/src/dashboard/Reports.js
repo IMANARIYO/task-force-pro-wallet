@@ -2,6 +2,7 @@ import * as XLSX from "xlsx";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../services/apiConfig";
 import { Button, DatePicker, Input, Select, Table, message } from "antd";
+import { fetchTransactions } from "../services/transactionsServices";
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
@@ -17,14 +18,14 @@ const Reports = () => {
   const [sortOrder, setSortOrder] = useState("descend");
 
   useEffect(() => {
-    fetchTransactions();
+    getTransactions();
   }, []);
 
   useEffect(() => {
     applyFilters();
   }, [searchText, typeFilter, transactions]);
 
-  const fetchTransactions = async () => {
+  const getTransactions = async () => {
     setLoading(true);
     try {
       const response =await fetchTransactions()

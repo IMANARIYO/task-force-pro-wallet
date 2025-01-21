@@ -49,19 +49,6 @@ const SubcategoryFormModal = ({
           />
         </div>
 
-        <div>
-          <label>Current Spending</label>
-          <Input
-            placeholder='Current Spending'
-            type='number'
-            value={subcategoryData.currentSpending}
-            onChange={e =>
-              setSubcategoryData({
-                ...subcategoryData,
-                currentSpending: parseFloat(e.target.value) || 0
-              })}
-          />
-        </div>
 
         <div>
           <label>Description</label>

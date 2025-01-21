@@ -18,7 +18,7 @@ const Login = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`,
         { email, password }
       )
-      message.success('Login successful!')
+
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('user', JSON.stringify(response.data.user))
       navigate('/home')

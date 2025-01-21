@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { Button, Form, Input, Modal, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import axios from 'axios'
+import { Button, Form, Input, Modal, message } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const LoginModal = ({ visible, onCancel, onLogin, loading }) =>
   <Modal title='Login' visible={visible} onCancel={onCancel} footer={null}>
@@ -78,7 +78,7 @@ const App = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`,
         values
       )
-      message.success('Login successful!')
+
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('user', JSON.stringify(response.data.user))
       navigate('/home')
@@ -97,7 +97,7 @@ const App = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`,
         values
       )
-      message.success('Registration successful!')
+
       setIsRegisterModalVisible(false)
       setIsLoginModalVisible(true)
     } catch (error) {
@@ -129,7 +129,6 @@ const App = () => {
         onLogin={handleLogin}
         loading={loading}
       />
-
 
       <RegisterModal
         visible={isRegisterModalVisible}
