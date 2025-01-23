@@ -97,7 +97,7 @@ const Reports = () => {
       Type: transaction.type,
       AccountName: transaction.account.name,
       CategoryName: transaction.categoryname,
-      Budget: transaction.category.budgetAmount.toFixed(2),
+      Budget: transaction.category?.budgetAmount.toFixed(2),
       AccountLimit: transaction.account.limit.toFixed(2),
       AccountBalance: transaction.account.balance.toFixed(2),
     }));
@@ -236,7 +236,7 @@ const Reports = () => {
       title: "Category Budget",
       dataIndex: "category",
       key: "category",
-      sorter: (a, b) => a.category.budgetAmount - b.category.budgetAmount,
+      sorter: (a, b) => a.category?.budgetAmount - b.category?.budgetAmount,
       render: (category) => `RWF ${category?.budgetAmount.toFixed(2)}`,
     },
     {
