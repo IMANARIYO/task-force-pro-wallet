@@ -237,7 +237,7 @@ const Reports = () => {
       dataIndex: "category",
       key: "category",
       sorter: (a, b) => a.category.budgetAmount - b.category.budgetAmount,
-      render: (category) => `RWF ${category.budgetAmount.toFixed(2)}`,
+      render: (category) => `RWF ${category?.budgetAmount.toFixed(2)}`,
     },
     {
       title: "Account Limit",
